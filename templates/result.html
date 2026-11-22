@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ATS Analysis Results</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 35px auto;
+            padding: 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 22px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #172554;
+        }
+
+        .score-box {
+            text-align: center;
+            padding: 35px;
+        }
+
+        .score {
+            font-size: 55px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .grade {
+            font-size: 20px;
+            margin-top: 10px;
+            color: #475569;
+        }
+
+        .summary {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+
+        .summary-item {
+            padding: 15px;
+            min-width: 130px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .summary-item h3 {
+            font-size: 25px;
+            margin-bottom: 5px;
+            color: #2563eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #172554;
+            color: white;
+        }
+
+        /* Skill display */
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .skill {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin: 3px;
+        }
+
+        .recommendation {
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .missing-skill {
+            color: #dc2626;
+            margin: 8px 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 22px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            margin: 5px;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        .actions {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+
+        /* Mobile screen support */
+
+        @media (max-width: 600px) {
+
+            .container {
+                margin: 15px auto;
+                padding: 10px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .score {
+                font-size: 42px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 9px;
+            }
+
+            .button {
+                display: block;
+                margin: 10px 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <h1>Resume Analysis Results</h1>
+        <p>Your AI-powered ATS compatibility report</p>
+    </header>
+
+
+    <div class="container">
+
+        <!-- ATS Score -->
+
+        <div class="card score-box">
+
+            <h2>Your ATS Score</h2>
+
+            <div class="score">
+                {{ score_report.ats_score }}/100
+            </div>
+
+            <div class="grade">
+                Grade: {{ score_report.grade }}
+            </div>
+
+        </div>
+
+
+        <!-- Analysis Summary -->
+
+        <div class="card">
+
+            <h2>ATS Analysis Summary</h2>
+
+            <div class="summary">
+
+                <div class="summary-item">
+                    <h3>{{ ats_report.total_checks }}</h3>
+                    <p>Total Checks</p>
+                </div>
+
+                <div class="summary-item">
+                    <h3>{{ ats_report.passed_checks }}</h3>
+                    <p>Passed</p>
+                </div>
+
+                <div class="summary-item">
+                    <h3>{{ ats_report.failed_checks }}</h3>
+                    <p>Failed</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Rule Results -->
+
+        <div class="card">
+
+            <h2>ATS Rule Check Results</h2>
+
+            <table>
+
+                <tr>
+                    <th>Rule</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                </tr>
+
+                {% for name, details in score_report.breakdown.items() %}
+
+                <tr>
+
+                    <td>
+                        {{ name.replace("_", " ").title() }}
+                    </td>
+
+                    <td>
+                        {{ details.status }}
+                    </td>
+
+                    <td>
+                        {{ details.earned_score }} / {{ details.weight }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+
+        <!-- Technical Skills -->
+
+        <div class="card">
+
+            <h2>Technical Skills Detected</h2>
+
+            <div class="skill-list">
+
+                {% for skill in analysis.technical_skills %}
+
+                    <span class="skill">
+                        {{ skill.title() }}
+                    </span>
+
+                {% else %}
+
+                    <p>No technical skills detected.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Soft Skills -->
+
+        <div class="card">
+
+            <h2>Soft Skills Detected</h2>
+
+            <div class="skill-list">
+
+                {% for skill in analysis.soft_skills %}
+
+                    <span class="skill">
+                        {{ skill.title() }}
+                    </span>
+
+                {% else %}
+
+                    <p>No soft skills detected.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ATS Recommendations -->
+
+        <div class="card">
+
+            <h2>Improvement Recommendations</h2>
+
+            {% for item in recommendations_report.ats_recommendations %}
+
+                <div class="recommendation">
+
+                    <strong>
+                        {{ item.category.replace("_", " ").title() }}
+                    </strong>
+
+                    <p>{{ item.suggestion }}</p>
+
+                </div>
+
+            {% else %}
+
+                <p>No ATS recommendations available.</p>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Skill Gap Analysis -->
+
+        <div class="card">
+
+            <h2>Skill Gap Analysis</h2>
+
+            {% if recommendations_report.skill_recommendations.missing_skills %}
+
+                <p>Skills not found in your resume:</p>
+
+                {% for skill in recommendations_report.skill_recommendations.missing_skills %}
+
+                    <p class="missing-skill">
+                        • {{ skill.title() }}
+                    </p>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No missing skills identified.</p>
+
+            {% endif %}
+
+            <br>
+
+            <p>
+                {{ recommendations_report.skill_recommendations.suggestion }}
+            </p>
+
+        </div>
+
+
+        <!-- Download Report -->
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('download_report', filename=report_filename) }}"
+                class="button"
+            >
+                Download PDF Report
+            </a>
+
+            <a href="{{ url_for('home') }}" class="button">
+                Analyze Another Resume
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+        AI ATS Resume Checker | Resume Analysis System
+    </footer>
+
+</body>
+
+</html>

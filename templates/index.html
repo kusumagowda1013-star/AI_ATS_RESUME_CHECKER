@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI ATS Resume Checker</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #cbd5e1;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .upload-card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .upload-card h2 {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .supported {
+            text-align: center;
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>AI ATS Resume Checker</h1>
+
+        <p>Analyze your resume and improve your job application.</p>
+
+    </header>
+
+
+    <div class="container">
+
+        <div class="upload-card">
+
+            <h2>Upload Your Resume</h2>
+
+            <p class="description">
+                Upload your resume to check its ATS compatibility,
+                identify missing skills and receive improvement suggestions.
+            </p>
+
+
+            <form action="/analyze" method="POST" enctype="multipart/form-data">
+
+                <label for="resume">
+                    Select Your Resume
+                </label>
+
+                <input
+                    type="file"
+                    id="resume"
+                    name="resume"
+                    accept=".pdf,.docx,.txt"
+                    required
+                >
+
+
+                <label for="job_skills">
+                    Job Required Skills (Optional)
+                </label>
+
+                <textarea
+                    id="job_skills"
+                    name="job_skills"
+                    placeholder="Example: Python, SQL, Machine Learning, React"
+                ></textarea>
+
+
+                <button type="submit">
+                    Analyze My Resume
+                </button>
+
+            </form>
+
+
+            <p class="supported">
+                Supported formats: PDF, DOCX and TXT
+                <br>
+                Maximum file size: 10 MB
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+
+        AI ATS Resume Checker | Resume Analysis System
+
+    </footer>
+
+</body>
+
+</html>
